@@ -1,0 +1,29 @@
+0xca35b7d915458ef540ade6068dfe2f44e8fa733c : msg.sender (University account)
+0x14723a09acff6d2a60dcdf7aa4aff308fddc160c : Account 2
+0x4b0897b0513fdc7c541b6d9d7e929c4e5364d2db : Account 3
+0x583031d1113ad414f02576bd6afabfb302140225 : Account 4
+0xdd870fa1b7c4700f2bd7f44238821c26f7392148 : Account 5
+0xa3f4ebbb9332570217e5910fa0ca27da11122c00 : Account 6
+0xe13596fe4f1019597dc9abffd084e349a99ea2e9 : Account 7
+
+Student 1(Account 2):
+0x14723a09acff6d2a60dcdf7aa4aff308fddc160c, "Niklas Olsson", "08/10/1994", "S1434184"
+
+Records:
+0x14723a09acff6d2a60dcdf7aa4aff308fddc160c, "High School Diploma", "05/6/2013", "Qx51243t3t353"
+0x14723a09acff6d2a60dcdf7aa4aff308fddc160c, "Bachelors", "20/3/2019", "Qx51242188753"
+0x14723a09acff6d2a60dcdf7aa4aff308fddc160c, "Masters", "30/7/2021", "Qx5124mgkmh8753"
+
+Student 2 (Account 3):
+0x4b0897b0513fdc7c541b6d9d7e929c4e5364d2db, "Chris Connor", "11/10/1989", "S1335351"
+
+Records:
+0x4b0897b0513fdc7c541b6d9d7e929c4e5364d2db, "Bachelors", "20/03/2012", "Qx9gnig3ksiniks"
+0x4b0897b0513fdc7c541b6d9d7e929c4e5364d2db, "Masters", "24/06/2015", "Qxtim343ave1qw"
+0x4b0897b0513fdc7c541b6d9d7e929c4e5364d2db, "PhD", "05/01/2018", "Qxge5mmit3rsb23"
+
+Student 3 (Account 4):
+0x583031d1113ad414f02576bd6afabfb302140225, "Urban Olsson", "31/03/1964", "S1346556"
+
+Records:
+0x583031d1113ad414f02576bd6afabfb302140225 "Bachelors", "10/04/1982", "Qx4235613563" 
