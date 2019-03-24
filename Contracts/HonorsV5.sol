@@ -1,6 +1,6 @@
 pragma solidity^0.5.5;
 
-contract HonorsV4 {
+contract HonorsV5 {
     address manager;
     mapping (address => Student) students;
     address[] studentAccts;
@@ -53,7 +53,6 @@ contract HonorsV4 {
     }
     
     function deleteRecord(address _address, bytes32 _recordID) public restricted returns (bool success){
-        // bytes32[] storage structRecords = students[_address].records;
         uint index = 0;
         
         for(uint i = 0; i<= students[_address].records.length; i++){
@@ -69,9 +68,6 @@ contract HonorsV4 {
             }
         }
         return success = false;
-        
-        // return (students[_address].records[1]);
-        // student.records[_recordID]=  student.records[student.records.length -1];
     }
     
     function addStudent(address _address, string memory _fullName, string memory _dateOfBirth, 
@@ -124,20 +120,24 @@ contract HonorsV4 {
         students[_address].records);
     }
     
-    function setStudentName(address _studentAddress, string memory _newName) public restricted returns(bool success){
-        Student storage student = students[_studentAddress];
-        student.fullName = _newName;
-        
+    function setStudentName(address _address, string memory _newName) public restricted returns(bool){
+        students[_address].fullName = _newName;
         return true;
-    
     }
-    
-    
+    function setDateOfBirth(address _address, string memory _newDOB) public restricted returns(bool){
+        students[_address].dateOfBirth = _newDOB;
+        return true;
+    }
+    function setStudentID(address _address, string memory _newID) public restricted returns(bool){
+        students[_address].studentID = _newID;
+        return true;
+    }
     
     function countStudents() view public returns (uint) {
         return studentAccts.length;
     }
     
+    // ################# Ulitity functions 
     function random(address _address, string memory _string1, string memory _string2, 
     string memory _string3)  private pure returns (bytes32) {
         return bytes32(keccak256(abi.encodePacked(_address, _string1, _string2, _string3)));
