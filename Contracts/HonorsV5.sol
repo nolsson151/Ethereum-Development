@@ -53,15 +53,14 @@ contract HonorsV4 {
     }
     
     function deleteRecord(address _address, bytes32 _recordID) public restricted returns (bool success){
-        Student storage student = students[_address];
-
+        // bytes32[] storage structRecords = students[_address].records;
         uint index = 0;
         
-        for(uint i = 0; i>= student.records.length; i++){
-            if( compareBytes32(_recordID, student.records[index]) == true ){
-                student.records[index] = student.records[student.records.length -1];
-                delete student.records[student.records.length -1];
-                student.records.length --;
+        for(uint i = 0; i<= students[_address].records.length; i++){
+            if( compareBytes32(_recordID, students[_address].records[index]) == true ){
+                students[_address].records[index] = students[_address].records[students[_address].records.length -1];
+                delete students[_address].records[students[_address].records.length -1];
+                students[_address].records.length --;
                 delete(recordMappings[_recordID]);
                 return success = true;
             }
@@ -69,10 +68,10 @@ contract HonorsV4 {
                 index++;
             }
         }
+        return success = false;
         
         // return (students[_address].records[1]);
         // student.records[_recordID]=  student.records[student.records.length -1];
-        
     }
     
     function addStudent(address _address, string memory _fullName, string memory _dateOfBirth, 
