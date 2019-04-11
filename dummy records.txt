@@ -1,10 +1,10 @@
 0xca35b7d915458ef540ade6068dfe2f44e8fa733c : msg.sender (University account)
-0x14723a09acff6d2a60dcdf7aa4aff308fddc160c : Account 2
-0x4b0897b0513fdc7c541b6d9d7e929c4e5364d2db : Account 3
-0x583031d1113ad414f02576bd6afabfb302140225 : Account 4
-0xdd870fa1b7c4700f2bd7f44238821c26f7392148 : Account 5
-0xa3f4ebbb9332570217e5910fa0ca27da11122c00 : Account 6
-0xe13596fe4f1019597dc9abffd084e349a99ea2e9 : Account 7
+0x14723a09acff6d2a60dcdf7aa4aff308fddc160c : Account 2 Niklas Olsson
+0x4b0897b0513fdc7c541b6d9d7e929c4e5364d2db : Account 3 John Feller
+0x583031d1113ad414f02576bd6afabfb302140225 : Account 4 Jane Person
+0xdd870fa1b7c4700f2bd7f44238821c26f7392148 : Account 5 Steve Bloke
+0xa3f4ebbb9332570217e5910fa0ca27da11122c00 : Account 6 Amy Buddy
+0xe13596fe4f1019597dc9abffd084e349a99ea2e9 : Account 7 Jane Person
 
 Student 1(Account 2):
 0x14723a09acff6d2a60dcdf7aa4aff308fddc160c, "Niklas Olsson", "08/10/1994", "S1434184"
@@ -26,4 +26,4 @@ Student 3 (Account 4):
 0x583031d1113ad414f02576bd6afabfb302140225, "Jane Person", "31/03/1964", "S1346556"
 
 Records:
-0x583031d1113ad414f02576bd6afabfb302140225 "PhD", "10/04/1982", "Qm42356135341s55311f36kfknfKNxkn43" 
+0x583031d1113ad414f02576bd6afabfb302140225, "PhD", "10/04/1982", "Qm42356135341s55311f36kfknfKNxkn43" 
