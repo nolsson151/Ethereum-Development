@@ -1,10 +1,12 @@
 pragma solidity^0.5.5;
 
 contract HonorsV5 {
-    address manager;
-    mapping (address => Student) studentMappings;
-    address[] studentAccts;
-    mapping(bytes32 => Record)  recordMappings;
+    address private manager;
+    mapping (address => Student) private studentMappings;
+    mapping (address => bool) private isStudent;
+    address[] private studentAccts;
+    mapping(bytes32 => Record) private recordMappings;
+    mapping(bytes32 => bool) private isRecord;
     
     constructor() public{
         manager = msg.sender;
@@ -36,9 +38,15 @@ contract HonorsV5 {
     //a record array of all created records. 
     function addRecord(address _holderAddress, string memory _title, string memory _dateOfIssue,
     string memory _ipfsHash) public restricted returns (bool){
-        bytes32 randomHash = random(_holderAddress, _title, _dateOfIssue, _ipfsHash);
-        Record storage r = recordMappings[randomHash];
+        if(studentExists(_holderAddress) == false){
+            return false;
+        }
         
+        bytes32 randomHash = random(_holderAddress, _title, _dateOfIssue, _ipfsHash);
+        if(recordExists(randomHash) == true){
+            return false;
+        }
+        Record storage r = recordMappings[randomHash];
         r.issuerAddress = msg.sender;
         r.holderAddress = _holderAddress;
         r.title = _title;
@@ -46,7 +54,8 @@ contract HonorsV5 {
         r.recipientFullName = getStudentName(_holderAddress);
         r.ipfsHash = _ipfsHash;
         addRecordToStudent(randomHash, _holderAddress);
-        
+        isRecord[randomHash] = true;
+        return true;
     }
     
     function addRecordToStudent(bytes32 _recordID ,address _studentAddress) private {
@@ -55,10 +64,15 @@ contract HonorsV5 {
         s.recordCount++;
     }
     
+    
     function deleteRecord(address _address, bytes32 _recordID) public restricted returns (bool){
+        if(studentExists(_address) == false){
+            return false;
+        }
         Student storage s = studentMappings[_address];
         if(s.records.length == 0){
             return false;
+        
         }
         else{
             uint index = 0;
@@ -70,6 +84,7 @@ contract HonorsV5 {
                     s.records.length --;
                     s.recordCount--;
                     delete(recordMappings[_recordID]);
+                    isRecord[_recordID] = false;
                     return true;
                 }
                 else{
@@ -82,17 +97,25 @@ contract HonorsV5 {
     
     function addStudent(address _address, string memory _fullName, string memory _dateOfBirth, 
     string memory _studentID) public restricted  returns (bool){
+        if(studentExists(_address) == true){
+            return false;
+        }
         Student storage s = studentMappings[_address];
+        isStudent[_address] = true;
 
         s.fullName = _fullName;
         s.dateOfBirth = _dateOfBirth;
         s.studentID = _studentID;
         s.recordCount = 0;
         studentAccts.push(_address) -1;
+        isStudent[_address] = true;
         return true;
     }
     
     function deleteStudent(address _address) public restricted returns(bool){
+        if(studentExists(_address) == false){
+            return false;
+        }
         if(studentAccts.length == 0){
             return false;
         }
@@ -105,6 +128,7 @@ contract HonorsV5 {
                     delete studentAccts[studentAccts.length -1];
                     studentAccts.length -- ;
                     delete (studentMappings[_address]);
+                    isStudent[_address] = false;
                     return true;
                 }
                 else {
@@ -160,9 +184,75 @@ contract HonorsV5 {
         return studentAccts.length;
     }
     
+
+    
+    function setRecordHolder(bytes32 _bytes32, address _oldStudent, address _newStudent) 
+    public restricted returns(bool){
+        if(studentExists(_oldStudent) == false && studentExists(_newStudent) == false){
+            return false;
+        }
+        else if(recordExists(_bytes32) == false){
+            return false;
+        }
+            Record storage oldRecord = recordMappings[_bytes32];
+            bytes32 randomHash = random(_newStudent, oldRecord.title, oldRecord.dateOfIssue, oldRecord.ipfsHash);
+            Record storage newRecord = recordMappings[randomHash];
+            newRecord.holderAddress = _newStudent;
+            newRecord.issuerAddress = manager;
+            newRecord.dateOfIssue = oldRecord.dateOfIssue;
+            newRecord.title = oldRecord.dateOfIssue;
+            newRecord.recipientFullName = getStudentName(_newStudent);
+            newRecord.ipfsHash = oldRecord.ipfsHash;
+            addRecordToStudent(randomHash, _newStudent);
+            deleteRecord(_oldStudent, _bytes32);
+            return true;
+    }
+    
+    function setDateOfIssue(bytes32 _bytes32, string memory _dateOfIssue) public restricted returns(bool){
+        if(recordExists(_bytes32) == false){
+            return false;
+        }
+        recordMappings[_bytes32].dateOfIssue = _dateOfIssue;
+        return true;
+    }
+    
+    function setRecordTitle(bytes32 _bytes32, string memory _title) public restricted returns(bool){
+        if(recordExists(_bytes32) == false){
+            return false;
+        }
+        recordMappings[_bytes32].title = _title;
+        return true;
+    }
+    
+    function setRecipientName(bytes32 _bytes32, string memory _name) public restricted returns(bool){
+        if(recordExists(_bytes32) == false){
+            return false;
+        }
+        recordMappings[_bytes32].recipientFullName = _name;
+        return true;
+    }
+    
+    function setIpfsHash(bytes32 _bytes32, string memory _ipfsHash) public restricted returns(bool){
+        if(recordExists(_bytes32) == false){
+            return false;
+        }
+        recordMappings[_bytes32].ipfsHash = _ipfsHash;
+        return true;
+    }
+    
+    
+    function studentExists(address  _address) public restricted returns(bool){
+        return isStudent[_address];
+    }
+    
+    function recordExists(bytes32 _bytes32) public restricted returns(bool){
+        return isRecord[_bytes32];
+    }
+    
     // ################# Ulitity functions 
+    
     function random(address _address, string memory _string1, string memory _string2, 
-    string memory _string3)  private pure returns (bytes32) {
+    string memory _string3)  public pure returns (bytes32) {
         return bytes32(keccak256(abi.encodePacked(_address, _string1, _string2, _string3)));
     }
     

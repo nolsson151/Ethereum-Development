@@ -10,20 +10,20 @@ Student 1(Account 2):
 0x14723a09acff6d2a60dcdf7aa4aff308fddc160c, "Niklas Olsson", "08/10/1994", "S1434184"
 
 Records:
-0x14723a09acff6d2a60dcdf7aa4aff308fddc160c, "High School Diploma", "05/6/2013", "Qx51243t3t353"
-0x14723a09acff6d2a60dcdf7aa4aff308fddc160c, "Bachelors", "20/3/2019", "Qx51242188753"
-0x14723a09acff6d2a60dcdf7aa4aff308fddc160c, "Masters", "30/7/2021", "Qx5124mgkmh8753"
+0x14723a09acff6d2a60dcdf7aa4aff308fddc160c, "High School Diploma", "05/6/2013", "QmWHh1MuAi9h6WN3tE1pqdAji7abQJM8chWRKyUgvi1CoB"
+0x14723a09acff6d2a60dcdf7aa4aff308fddc160c, "Bachelors", "20/3/2019", "Qm51242188753uMM9j9SnnfwIWbi240niSKJIWn29"
+0x14723a09acff6d2a60dcdf7aa4aff308fddc160c, "Masters", "30/7/2021", "Qm5124mgkmh8753nin3gInfjFp219fffq$bmltiNudb"
 
 Student 2 (Account 3):
-0x4b0897b0513fdc7c541b6d9d7e929c4e5364d2db, "Chris Connor", "11/10/1989", "S1335351"
+0x4b0897b0513fdc7c541b6d9d7e929c4e5364d2db, "John Feller", "11/10/1989", "S1335351"
 
 Records:
-0x4b0897b0513fdc7c541b6d9d7e929c4e5364d2db, "Bachelors", "20/03/2012", "Qx9gnig3ksiniks"
-0x4b0897b0513fdc7c541b6d9d7e929c4e5364d2db, "Masters", "24/06/2015", "Qxtim343ave1qw"
-0x4b0897b0513fdc7c541b6d9d7e929c4e5364d2db, "PhD", "05/01/2018", "Qxge5mmit3rsb23"
+0x4b0897b0513fdc7c541b6d9d7e929c4e5364d2db, "Bachelors", "20/03/2012", "Qm51242188753uMM9j9SnnfwIWbi240niSKJIWn29"
+0x4b0897b0513fdc7c541b6d9d7e929c4e5364d2db, "Masters", "24/06/2015", "Qm51242188753uMM931434j9SnnfwIWbi240niSKJIWn29"
+0x4b0897b0513fdc7c541b6d9d7e929c4e5364d2db, "PhD", "05/01/2018", "Qmge5mmitgg23dv4671wdd143663rsb23"
 
 Student 3 (Account 4):
-0x583031d1113ad414f02576bd6afabfb302140225, "Urban Olsson", "31/03/1964", "S1346556"
+0x583031d1113ad414f02576bd6afabfb302140225, "Jane Person", "31/03/1964", "S1346556"
 
 Records:
-0x583031d1113ad414f02576bd6afabfb302140225 "Bachelors", "10/04/1982", "Qx4235613563" 
+0x583031d1113ad414f02576bd6afabfb302140225 "PhD", "10/04/1982", "Qm42356135341s55311f36kfknfKNxkn43" 
