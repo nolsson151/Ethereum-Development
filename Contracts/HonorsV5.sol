@@ -241,23 +241,22 @@ contract HonorsV5 {
     }
     
     
-    function studentExists(address  _address) public restricted returns(bool){
+    function studentExists(address  _address) private restricted view returns(bool){
         return isStudent[_address];
     }
     
-    function recordExists(bytes32 _bytes32) public restricted returns(bool){
+    function recordExists(bytes32 _bytes32) private restricted view returns(bool){
         return isRecord[_bytes32];
     }
     
     // ################# Ulitity functions 
     
     function random(address _address, string memory _string1, string memory _string2, 
-    string memory _string3)  public pure returns (bytes32) {
+    string memory _string3)  private pure returns (bytes32) {
         return bytes32(keccak256(abi.encodePacked(_address, _string1, _string2, _string3)));
     }
     
     function compareBytes32(bytes32  _bytes1, bytes32  _bytes2) private pure returns (bool){
         return keccak256(abi.encodePacked(_bytes1)) == keccak256(abi.encodePacked(_bytes2));
     }
-    
 }
