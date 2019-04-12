@@ -24,7 +24,7 @@ Student 2 (Account 3):
 0x4b0897b0513fdc7c541b6d9d7e929c4e5364d2db, "John Feller", "11/10/1989", "S1335351"
 
 Records:
-0x4b0897b0513fdc7c541b6d9d7e929c4e5364d2db, "Bachelor of Arts", "20/03/2012", "QmbZSzbHLTQqszJ1G3WksyTRsvfuKK6pmqc4Qu2gtF8NQQ"
+0x4b0897b0513fdc7c541b6d9d7e929c4e5364d2db, "Bachelor of Arts", "20/03/2012", "QmSYe8XwYszSzwXZeuv8b49tWHW6da1w5v9UsKbHaTW9YY"
 0x4b0897b0513fdc7c541b6d9d7e929c4e5364d2db, "Masters of Arts", "24/06/2015", "QmbaNRzV1E8tDmz3Tq4SPj8trevq88A7iyAsamNJAYk93n"
 0x4b0897b0513fdc7c541b6d9d7e929c4e5364d2db, "PhD of Art History", "05/01/2018", "QmbnNfEF34kswftL8Yi1Qw87S2kiP9pGYZvppjtfXSfwxD"
 
