@@ -22,9 +22,9 @@ contract StudentContract{
         return university.getStudentDetails(studentAddress);
     }
     
-    function getRecordDetails(bytes32 _recordID) public view restricted returns
+    function getAwardDetails(bytes32 _awardID) public view restricted returns
     (address, address, string memory, string memory, string memory, string memory){
-        return university.getRecordDetails(_recordID);
+        return university.getAwardDetails(_awardID);
     }
 }
 
@@ -34,14 +34,12 @@ contract University {
     mapping (address => Student) private studentMappings;
     mapping (address => bool) private isStudent;
     address[] private listOfStudents;
-    mapping(address => address) private studentContracts;
-    mapping(bytes32 => Record) private recordMappings;
-    mapping(bytes32 => bool) private isRecord;
+    mapping (address => address) private studentContracts;
+    mapping (bytes32 => Award) private awardMappings;
+    mapping (bytes32 => bool) private isAward;
     
-    constructor() public{
-        universityAddress = msg.sender;
-    }
-    struct Record {
+
+    struct Award {
         address issuerAddress;
         address holderAddress;
         string dateOfIssue;
@@ -54,8 +52,12 @@ contract University {
         string fullName;
         string dateOfBirth;
         string studentID;
-        bytes32[] records;
-        uint recordCount;
+        bytes32[] awards;
+        uint awardCount;
+    }
+    
+    constructor() public{
+        universityAddress = msg.sender;
     }
     //Modifier to require contract creator only.
     modifier restricted() { 
@@ -63,58 +65,58 @@ contract University {
         _;
     }
     
-    //Creates a record and assigns the details to a corressponding student
-    //and add it to their personal record array. Record is also added to
-    //a record array of all created records. 
-    function addRecord(address _holderAddress, string memory _title, string memory _dateOfIssue,
+    //Creates a award and assigns the details to a corressponding student
+    //and add it to their personal award array. Award is also added to
+    //a award array of all created awards. 
+    function addAward(address _holderAddress, string memory _title, string memory _dateOfIssue,
     string memory _ipfsHash) public restricted returns (bool){
         if(studentExists(_holderAddress) == false){
             return false;
         }
         
         bytes32 randomHash = random(_holderAddress, _title, _dateOfIssue, _ipfsHash);
-        if(recordExists(randomHash) == true){
+        if(awardExists(randomHash) == true){
             return false;
         }
-        Record storage r = recordMappings[randomHash];
+        Award storage r = awardMappings[randomHash];
         r.issuerAddress = msg.sender;
         r.holderAddress = _holderAddress;
         r.title = _title;
         r.dateOfIssue = _dateOfIssue;
         r.studentFullName = getStudentName(_holderAddress);
         r.ipfsHash = _ipfsHash;
-        addRecordToStudent(randomHash, _holderAddress);
-        isRecord[randomHash] = true;
+        addAwardToStudent(randomHash, _holderAddress);
+        isAward[randomHash] = true;
         return true;
     }
     
-    function addRecordToStudent(bytes32 _recordID ,address _studentAddress) private {
+    function addAwardToStudent(bytes32 _awardID ,address _studentAddress) private {
         Student storage s = studentMappings[_studentAddress];
-        s.records.push(_recordID) -1;
-        s.recordCount++;
+        s.awards.push(_awardID) -1;
+        s.awardCount++;
     }
     
     
-    function deleteRecord(address _studentAddress, bytes32 _recordID) public restricted returns (bool){
+    function deleteAward(address _studentAddress, bytes32 _awardID) public restricted returns (bool){
         if(studentExists(_studentAddress) == false){
             return false;
         }
         Student storage s = studentMappings[_studentAddress];
-        if(s.records.length == 0){
+        if(s.awards.length == 0){
             return false;
         
         }
         else{
             uint index = 0;
         
-            for(uint i = 0; i<= s.records.length; i++){
-                if( compareBytes32(_recordID, s.records[index]) == true ){
-                    s.records[index] = s.records[s.records.length -1];
-                    delete s.records[s.records.length -1];
-                    s.records.length --;
-                    s.recordCount--;
-                    delete(recordMappings[_recordID]);
-                    isRecord[_recordID] = false;
+            for(uint i = 0; i<= s.awards.length; i++){
+                if( compareBytes32(_awardID, s.awards[index]) == true ){
+                    s.awards[index] = s.awards[s.awards.length -1];
+                    delete s.awards[s.awards.length -1];
+                    s.awards.length --;
+                    s.awardCount--;
+                    delete(awardMappings[_awardID]);
+                    isAward[_awardID] = false;
                     return true;
                 }
                 else{
@@ -136,7 +138,7 @@ contract University {
         s.fullName = _fullName;
         s.dateOfBirth = _dateOfBirth;
         s.studentID = _studentID;
-        s.recordCount = 0;
+        s.awardCount = 0;
         
         studentContracts[_studentAddress] = createStudentContract(_studentAddress);
         listOfStudents.push(_studentAddress) -1;
@@ -166,17 +168,18 @@ contract University {
         studentMappings[_studentAddress].dateOfBirth,
         studentMappings[_studentAddress].studentID,
         studentContracts[_studentAddress],
-        studentMappings[_studentAddress].records);
+        studentMappings[_studentAddress].awards);
     }
     
-    function getRecordDetails(bytes32  _recordID) public view returns 
+    
+    function getAwardDetails(bytes32  _awardID) public view returns 
     (address, address, string memory, string memory, string memory, string memory){
-        return (recordMappings[_recordID].holderAddress, 
-        recordMappings[_recordID].issuerAddress, 
-        recordMappings[_recordID].dateOfIssue, 
-        recordMappings[_recordID].title, 
-        recordMappings[_recordID].studentFullName, 
-        recordMappings[_recordID].ipfsHash);
+        return (awardMappings[_awardID].holderAddress, 
+        awardMappings[_awardID].issuerAddress, 
+        awardMappings[_awardID].dateOfIssue, 
+        awardMappings[_awardID].title, 
+        awardMappings[_awardID].studentFullName, 
+        awardMappings[_awardID].ipfsHash);
     }
     
     function setStudentName(address _studentAddress, string memory _newName) public restricted returns(bool){
@@ -199,57 +202,57 @@ contract University {
     
 
     
-    function setRecordHolder(bytes32 _recordID, address _oldStudent, address _newStudent) 
+    function setAwardHolder(bytes32 _awardID, address _oldStudent, address _newStudent) 
     public restricted returns(bool){
         if(studentExists(_oldStudent) == false && studentExists(_newStudent) == false){
             return false;
         }
-        else if(recordExists(_recordID) == false){
+        else if(awardExists(_awardID) == false){
             return false;
         }
-            Record storage oldRecord = recordMappings[_recordID];
-            bytes32 randomHash = random(_newStudent, oldRecord.title, oldRecord.dateOfIssue, oldRecord.ipfsHash);
-            Record storage newRecord = recordMappings[randomHash];
-            newRecord.holderAddress = _newStudent;
-            newRecord.issuerAddress = universityAddress;
-            newRecord.dateOfIssue = oldRecord.dateOfIssue;
-            newRecord.title = oldRecord.dateOfIssue;
-            newRecord.studentFullName = getStudentName(_newStudent);
-            newRecord.ipfsHash = oldRecord.ipfsHash;
-            addRecordToStudent(randomHash, _newStudent);
-            deleteRecord(_oldStudent, _recordID);
+            Award storage oldAward = awardMappings[_awardID];
+            bytes32 randomHash = random(_newStudent, oldAward.title, oldAward.dateOfIssue, oldAward.ipfsHash);
+            Award storage newAward = awardMappings[randomHash];
+            newAward.holderAddress = _newStudent;
+            newAward.issuerAddress = universityAddress;
+            newAward.dateOfIssue = oldAward.dateOfIssue;
+            newAward.title = oldAward.dateOfIssue;
+            newAward.studentFullName = getStudentName(_newStudent);
+            newAward.ipfsHash = oldAward.ipfsHash;
+            addAwardToStudent(randomHash, _newStudent);
+            deleteAward(_oldStudent, _awardID);
             return true;
     }
     
-    function setDateOfIssue(bytes32 _recordID, string memory _dateOfIssue) public restricted returns(bool){
-        if(recordExists(_recordID) == false){
+    function setDateOfIssue(bytes32 _awardID, string memory _dateOfIssue) public restricted returns(bool){
+        if(awardExists(_awardID) == false){
             return false;
         }
-        recordMappings[_recordID].dateOfIssue = _dateOfIssue;
+        awardMappings[_awardID].dateOfIssue = _dateOfIssue;
         return true;
     }
     
-    function setRecordTitle(bytes32 _recordID, string memory _title) public restricted returns(bool){
-        if(recordExists(_recordID) == false){
+    function setAwardTitle(bytes32 _awardID, string memory _title) public restricted returns(bool){
+        if(awardExists(_awardID) == false){
             return false;
         }
-        recordMappings[_recordID].title = _title;
+        awardMappings[_awardID].title = _title;
         return true;
     }
     
-    function setRecipientName(bytes32 _recordID, string memory _name) public restricted returns(bool){
-        if(recordExists(_recordID) == false){
+    function setRecipientName(bytes32 _awardID, string memory _name) public restricted returns(bool){
+        if(awardExists(_awardID) == false){
             return false;
         }
-        recordMappings[_recordID].studentFullName = _name;
+        awardMappings[_awardID].studentFullName = _name;
         return true;
     }
     
-    function setIpfsHash(bytes32 _recordID, string memory _ipfsHash) public restricted returns(bool){
-        if(recordExists(_recordID) == false){
+    function setIpfsHash(bytes32 _awardID, string memory _ipfsHash) public restricted returns(bool){
+        if(awardExists(_awardID) == false){
             return false;
         }
-        recordMappings[_recordID].ipfsHash = _ipfsHash;
+        awardMappings[_awardID].ipfsHash = _ipfsHash;
         return true;
     }
     
@@ -258,8 +261,8 @@ contract University {
         return isStudent[_studentAddress];
     }
     
-    function recordExists(bytes32 _recordID) private restricted view returns(bool){
-        return isRecord[_recordID];
+    function awardExists(bytes32 _awardID) private restricted view returns(bool){
+        return isAward[_awardID];
     }
     
     // ################# Ulitity functions 
