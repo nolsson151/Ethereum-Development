@@ -3,13 +3,13 @@ pragma solidity^0.5.5;
 contract StudentContract{
     
     address studentAddress;
-    address issuerAddress;
-    IssuerContract issuer;
+    address universityAddress;
+    University university;
     
-    constructor(address _studentAddress, address _issuerAddress ) public{
+    constructor(address _studentAddress, address _universityAddress) public{
         studentAddress = _studentAddress;
-        issuerAddress = _issuerAddress;
-        issuer = IssuerContract(_issuerAddress);
+        universityAddress = _universityAddress;
+        university = University(_universityAddress);
     }
     
     modifier restricted(){
@@ -19,34 +19,34 @@ contract StudentContract{
     
     function getStudentDetails() public view restricted  returns
     (string memory,string memory,string memory,address, bytes32[] memory) {
-        return issuer.getStudentDetails(studentAddress);
+        return university.getStudentDetails(studentAddress);
     }
     
     function getRecordDetails(bytes32 _recordID) public view restricted returns
     (address, address, string memory, string memory, string memory, string memory){
-        return issuer.getRecordDetails(_recordID);
+        return university.getRecordDetails(_recordID);
     }
 }
 
 
-contract IssuerContract {
-    address private manager;
+contract University {
+    address private universityAddress;
     mapping (address => Student) private studentMappings;
     mapping (address => bool) private isStudent;
-    address[] private studentAccts;
+    address[] private listOfStudents;
     mapping(address => address) private studentContracts;
     mapping(bytes32 => Record) private recordMappings;
     mapping(bytes32 => bool) private isRecord;
     
     constructor() public{
-        manager = msg.sender;
+        universityAddress = msg.sender;
     }
     struct Record {
         address issuerAddress;
         address holderAddress;
         string dateOfIssue;
         string title;
-        string recipientFullName;
+        string studentFullName;
         string ipfsHash;
     }
     
@@ -59,7 +59,7 @@ contract IssuerContract {
     }
     //Modifier to require contract creator only.
     modifier restricted() { 
-        require(msg.sender == manager); 
+        require(msg.sender == universityAddress); 
         _;
     }
     
@@ -81,7 +81,7 @@ contract IssuerContract {
         r.holderAddress = _holderAddress;
         r.title = _title;
         r.dateOfIssue = _dateOfIssue;
-        r.recipientFullName = getStudentName(_holderAddress);
+        r.studentFullName = getStudentName(_holderAddress);
         r.ipfsHash = _ipfsHash;
         addRecordToStudent(randomHash, _holderAddress);
         isRecord[randomHash] = true;
@@ -95,11 +95,11 @@ contract IssuerContract {
     }
     
     
-    function deleteRecord(address _address, bytes32 _recordID) public restricted returns (bool){
-        if(studentExists(_address) == false){
+    function deleteRecord(address _studentAddress, bytes32 _recordID) public restricted returns (bool){
+        if(studentExists(_studentAddress) == false){
             return false;
         }
-        Student storage s = studentMappings[_address];
+        Student storage s = studentMappings[_studentAddress];
         if(s.records.length == 0){
             return false;
         
@@ -125,22 +125,22 @@ contract IssuerContract {
             }
     }
     
-    function addStudent(address _address, string memory _fullName, string memory _dateOfBirth, 
+    function addStudent(address _studentAddress, string memory _fullName, string memory _dateOfBirth, 
     string memory _studentID) public restricted  returns (bool){
-        if(studentExists(_address) == true){
+        if(studentExists(_studentAddress) == true){
             return false;
         }
-        Student storage s = studentMappings[_address];
-        isStudent[_address] = true;
+        Student storage s = studentMappings[_studentAddress];
+        isStudent[_studentAddress] = true;
 
         s.fullName = _fullName;
         s.dateOfBirth = _dateOfBirth;
         s.studentID = _studentID;
         s.recordCount = 0;
         
-        studentContracts[_address] = createStudentContract(_address);
-        studentAccts.push(_address) -1;
-        isStudent[_address] = true;
+        studentContracts[_studentAddress] = createStudentContract(_studentAddress);
+        listOfStudents.push(_studentAddress) -1;
+        isStudent[_studentAddress] = true;
         return true;
     }
     
@@ -148,153 +148,118 @@ contract IssuerContract {
         return address(new StudentContract(_studentAddress, address(this)));
     }
     
-    // function deleteStudent(address _address) public restricted returns(bool){
-    //     if(studentExists(_address) == false){
-    //         return false;
-    //     }
-    //     if(studentAccts.length == 0){
-    //         return false;
-    //     }
-    //     else{
-    //         uint index = 0;
-    //         for(uint i =0; i<= studentAccts.length; i++){
-    //             if (_address == studentAccts[index]){
-    //                 studentAccts[index] = studentAccts[studentAccts.length -1];
-    //                 delete studentAccts[studentAccts.length -1];
-    //                 studentAccts.length -- ;
-    //                 uint recordIndex = studentMappings[_address].recordCount;
-    //                 for(uint i=recordIndex; i>=0; i--){
-    //                     bytes32[] storage recordsToDelete = studentMappings[_address].records;
-    //                     isRecord[recordsToDelete[recordIndex]] = false; 
-    //                     delete(recordMappings[recordsToDelete[recordIndex-1]]);
-    //                     recordIndex--;
-    //                 }
-    //                 delete (studentMappings[_address]);
-    //                 isStudent[_address] = false;
-    //                 return true;
-    //             }
-    //             else {
-    //                 index ++;
-    //             }
-             
-    //         }
-    //         return false;
-    //     }
-    // }
-    
-    
     function getStudents() view public returns(address[] memory) {
-        return studentAccts;
+        return listOfStudents;
     }
     
-    function getStudentContracts(address _studentWallet) public view restricted returns(address){
-        return studentContracts[_studentWallet];
+    function getStudentContract(address _studentAddress) public view restricted returns(address){
+        return studentContracts[_studentAddress];
     }
     
     function getStudentName(address _address) private view returns (string memory){
        return (studentMappings[_address].fullName);
     }
     
-    function getStudentDetails(address _address) public view  returns 
+    function getStudentDetails(address _studentAddress) public view  returns 
     (string memory,string memory,string memory, address, bytes32[] memory) {
-        return (studentMappings[_address].fullName,
-        studentMappings[_address].dateOfBirth,
-        studentMappings[_address].studentID,
-        studentContracts[_address],
-        studentMappings[_address].records);
+        return (studentMappings[_studentAddress].fullName,
+        studentMappings[_studentAddress].dateOfBirth,
+        studentMappings[_studentAddress].studentID,
+        studentContracts[_studentAddress],
+        studentMappings[_studentAddress].records);
     }
     
-    function getRecordDetails(bytes32  _bytes32) public view returns 
+    function getRecordDetails(bytes32  _recordID) public view returns 
     (address, address, string memory, string memory, string memory, string memory){
-        return (recordMappings[_bytes32].holderAddress, 
-        recordMappings[_bytes32].issuerAddress, 
-        recordMappings[_bytes32].dateOfIssue, 
-        recordMappings[_bytes32].title, 
-        recordMappings[_bytes32].recipientFullName, 
-        recordMappings[_bytes32].ipfsHash);
+        return (recordMappings[_recordID].holderAddress, 
+        recordMappings[_recordID].issuerAddress, 
+        recordMappings[_recordID].dateOfIssue, 
+        recordMappings[_recordID].title, 
+        recordMappings[_recordID].studentFullName, 
+        recordMappings[_recordID].ipfsHash);
     }
     
-    function setStudentName(address _address, string memory _newName) public restricted returns(bool){
-        studentMappings[_address].fullName = _newName;
+    function setStudentName(address _studentAddress, string memory _newName) public restricted returns(bool){
+        studentMappings[_studentAddress].fullName = _newName;
         return true;
     }
     
-    function setDateOfBirth(address _address, string memory _newDOB) public restricted returns(bool){
-        studentMappings[_address].dateOfBirth = _newDOB;
+    function setDateOfBirth(address _studentAddress, string memory _newDOB) public restricted returns(bool){
+        studentMappings[_studentAddress].dateOfBirth = _newDOB;
         return true;
     }
-    function setStudentID(address _address, string memory _newID) public restricted returns(bool){
-        studentMappings[_address].studentID = _newID;
+    function setStudentID(address _studentAddress, string memory _newID) public restricted returns(bool){
+        studentMappings[_studentAddress].studentID = _newID;
         return true;
     }
     
     function countStudents() view public returns (uint) {
-        return studentAccts.length;
+        return listOfStudents.length;
     }
     
 
     
-    function setRecordHolder(bytes32 _bytes32, address _oldStudent, address _newStudent) 
+    function setRecordHolder(bytes32 _recordID, address _oldStudent, address _newStudent) 
     public restricted returns(bool){
         if(studentExists(_oldStudent) == false && studentExists(_newStudent) == false){
             return false;
         }
-        else if(recordExists(_bytes32) == false){
+        else if(recordExists(_recordID) == false){
             return false;
         }
-            Record storage oldRecord = recordMappings[_bytes32];
+            Record storage oldRecord = recordMappings[_recordID];
             bytes32 randomHash = random(_newStudent, oldRecord.title, oldRecord.dateOfIssue, oldRecord.ipfsHash);
             Record storage newRecord = recordMappings[randomHash];
             newRecord.holderAddress = _newStudent;
-            newRecord.issuerAddress = manager;
+            newRecord.issuerAddress = universityAddress;
             newRecord.dateOfIssue = oldRecord.dateOfIssue;
             newRecord.title = oldRecord.dateOfIssue;
-            newRecord.recipientFullName = getStudentName(_newStudent);
+            newRecord.studentFullName = getStudentName(_newStudent);
             newRecord.ipfsHash = oldRecord.ipfsHash;
             addRecordToStudent(randomHash, _newStudent);
-            deleteRecord(_oldStudent, _bytes32);
+            deleteRecord(_oldStudent, _recordID);
             return true;
     }
     
-    function setDateOfIssue(bytes32 _bytes32, string memory _dateOfIssue) public restricted returns(bool){
-        if(recordExists(_bytes32) == false){
+    function setDateOfIssue(bytes32 _recordID, string memory _dateOfIssue) public restricted returns(bool){
+        if(recordExists(_recordID) == false){
             return false;
         }
-        recordMappings[_bytes32].dateOfIssue = _dateOfIssue;
+        recordMappings[_recordID].dateOfIssue = _dateOfIssue;
         return true;
     }
     
-    function setRecordTitle(bytes32 _bytes32, string memory _title) public restricted returns(bool){
-        if(recordExists(_bytes32) == false){
+    function setRecordTitle(bytes32 _recordID, string memory _title) public restricted returns(bool){
+        if(recordExists(_recordID) == false){
             return false;
         }
-        recordMappings[_bytes32].title = _title;
+        recordMappings[_recordID].title = _title;
         return true;
     }
     
-    function setRecipientName(bytes32 _bytes32, string memory _name) public restricted returns(bool){
-        if(recordExists(_bytes32) == false){
+    function setRecipientName(bytes32 _recordID, string memory _name) public restricted returns(bool){
+        if(recordExists(_recordID) == false){
             return false;
         }
-        recordMappings[_bytes32].recipientFullName = _name;
+        recordMappings[_recordID].studentFullName = _name;
         return true;
     }
     
-    function setIpfsHash(bytes32 _bytes32, string memory _ipfsHash) public restricted returns(bool){
-        if(recordExists(_bytes32) == false){
+    function setIpfsHash(bytes32 _recordID, string memory _ipfsHash) public restricted returns(bool){
+        if(recordExists(_recordID) == false){
             return false;
         }
-        recordMappings[_bytes32].ipfsHash = _ipfsHash;
+        recordMappings[_recordID].ipfsHash = _ipfsHash;
         return true;
     }
     
     
-    function studentExists(address  _address) private restricted view returns(bool){
-        return isStudent[_address];
+    function studentExists(address  _studentAddress) private restricted view returns(bool){
+        return isStudent[_studentAddress];
     }
     
-    function recordExists(bytes32 _bytes32) private restricted view returns(bool){
-        return isRecord[_bytes32];
+    function recordExists(bytes32 _recordID) private restricted view returns(bool){
+        return isRecord[_recordID];
     }
     
     // ################# Ulitity functions 
