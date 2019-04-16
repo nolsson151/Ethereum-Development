@@ -224,35 +224,35 @@ contract UniversityContract {
             return true;
     }
     
-    function setDateOfIssue(bytes32 _awardID, string memory _dateOfIssue) public restricted returns(bool){
+    function setDateOfIssue(bytes32 _awardID, string memory _newDOI) public restricted returns(bool){
         if(awardExists(_awardID) == false){
             return false;
         }
-        awardMappings[_awardID].dateOfIssue = _dateOfIssue;
+        awardMappings[_awardID].dateOfIssue = _newDOI;
         return true;
     }
     
-    function setAwardTitle(bytes32 _awardID, string memory _title) public restricted returns(bool){
+    function setAwardTitle(bytes32 _awardID, string memory _newTitle) public restricted returns(bool){
         if(awardExists(_awardID) == false){
             return false;
         }
-        awardMappings[_awardID].title = _title;
+        awardMappings[_awardID].title = _newTitle;
         return true;
     }
     
-    function setRecipientName(bytes32 _awardID, string memory _name) public restricted returns(bool){
+    function setRecipientName(bytes32 _awardID, string memory _newName) public restricted returns(bool){
         if(awardExists(_awardID) == false){
             return false;
         }
-        awardMappings[_awardID].studentFullName = _name;
+        awardMappings[_awardID].studentFullName = _newName;
         return true;
     }
     
-    function setIpfsHash(bytes32 _awardID, string memory _ipfsHash) public restricted returns(bool){
+    function setIpfsHash(bytes32 _awardID, string memory _newIfsHash) public restricted returns(bool){
         if(awardExists(_awardID) == false){
             return false;
         }
-        awardMappings[_awardID].ipfsHash = _ipfsHash;
+        awardMappings[_awardID].ipfsHash = _newIfsHash;
         return true;
     }
     
