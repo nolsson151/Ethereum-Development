@@ -2,14 +2,14 @@ pragma solidity^0.5.5;
 
 contract StudentContract{
     
-    address studentAddress;
-    address universityAddress;
-    University university;
+    address private studentAddress;
+    address private universityAddress;
+    UniversityContract private universityContract;
     
     constructor(address _studentAddress, address _universityAddress) public{
         studentAddress = _studentAddress;
         universityAddress = _universityAddress;
-        university = University(_universityAddress);
+        universityContract = UniversityContract(_universityAddress);
     }
     
     modifier restricted(){
@@ -19,17 +19,17 @@ contract StudentContract{
     
     function getStudentDetails() public view restricted  returns
     (string memory,string memory,string memory,address, bytes32[] memory) {
-        return university.getStudentDetails(studentAddress);
+        return universityContract.getStudentDetails(studentAddress);
     }
     
     function getAwardDetails(bytes32 _awardID) public view restricted returns
     (address, address, string memory, string memory, string memory, string memory){
-        return university.getAwardDetails(_awardID);
+        return universityContract.getAwardDetails(_awardID);
     }
 }
 
 
-contract University {
+contract UniversityContract {
     address private universityAddress;
     mapping (address => Student) private studentMappings;
     mapping (address => bool) private isStudent;
@@ -40,8 +40,8 @@ contract University {
     
 
     struct Award {
-        address issuerAddress;
-        address holderAddress;
+        address universityIssuerAddress;
+        address studentAddress;
         string dateOfIssue;
         string title;
         string studentFullName;
@@ -68,29 +68,29 @@ contract University {
     //Creates a award and assigns the details to a corressponding student
     //and add it to their personal award array. Award is also added to
     //a award array of all created awards. 
-    function addAward(address _holderAddress, string memory _title, string memory _dateOfIssue,
+    function addAward(address _studentAddress, string memory _title, string memory _dateOfIssue,
     string memory _ipfsHash) public restricted returns (bool){
-        if(studentExists(_holderAddress) == false){
+        if(studentExists(_studentAddress) == false){
             return false;
         }
         
-        bytes32 randomHash = random(_holderAddress, _title, _dateOfIssue, _ipfsHash);
+        bytes32 randomHash = random(_studentAddress, _title, _dateOfIssue, _ipfsHash);
         if(awardExists(randomHash) == true){
             return false;
         }
         Award storage r = awardMappings[randomHash];
-        r.issuerAddress = msg.sender;
-        r.holderAddress = _holderAddress;
+        r.universityIssuerAddress = msg.sender;
+        r.studentAddress = _studentAddress;
         r.title = _title;
         r.dateOfIssue = _dateOfIssue;
-        r.studentFullName = getStudentName(_holderAddress);
+        r.studentFullName = getStudentName(_studentAddress);
         r.ipfsHash = _ipfsHash;
-        addAwardToStudent(randomHash, _holderAddress);
+        addAwardToStudent(_studentAddress, randomHash);
         isAward[randomHash] = true;
         return true;
     }
     
-    function addAwardToStudent(bytes32 _awardID ,address _studentAddress) private {
+    function addAwardToStudent(address _studentAddress, bytes32 _awardID) private {
         Student storage s = studentMappings[_studentAddress];
         s.awards.push(_awardID) -1;
         s.awardCount++;
@@ -158,8 +158,8 @@ contract University {
         return studentContracts[_studentAddress];
     }
     
-    function getStudentName(address _address) private view returns (string memory){
-       return (studentMappings[_address].fullName);
+    function getStudentName(address _studentAddress) private view returns (string memory){
+       return (studentMappings[_studentAddress].fullName);
     }
     
     function getStudentDetails(address _studentAddress) public view  returns 
@@ -174,8 +174,8 @@ contract University {
     
     function getAwardDetails(bytes32  _awardID) public view returns 
     (address, address, string memory, string memory, string memory, string memory){
-        return (awardMappings[_awardID].holderAddress, 
-        awardMappings[_awardID].issuerAddress, 
+        return (awardMappings[_awardID].studentAddress, 
+        awardMappings[_awardID].universityIssuerAddress, 
         awardMappings[_awardID].dateOfIssue, 
         awardMappings[_awardID].title, 
         awardMappings[_awardID].studentFullName, 
@@ -213,13 +213,13 @@ contract University {
             Award storage oldAward = awardMappings[_awardID];
             bytes32 randomHash = random(_newStudent, oldAward.title, oldAward.dateOfIssue, oldAward.ipfsHash);
             Award storage newAward = awardMappings[randomHash];
-            newAward.holderAddress = _newStudent;
-            newAward.issuerAddress = universityAddress;
+            newAward.studentAddress = _newStudent;
+            newAward.universityIssuerAddress = universityAddress;
             newAward.dateOfIssue = oldAward.dateOfIssue;
             newAward.title = oldAward.dateOfIssue;
             newAward.studentFullName = getStudentName(_newStudent);
             newAward.ipfsHash = oldAward.ipfsHash;
-            addAwardToStudent(randomHash, _newStudent);
+            addAwardToStudent(_newStudent, randomHash);
             deleteAward(_oldStudent, _awardID);
             return true;
     }
