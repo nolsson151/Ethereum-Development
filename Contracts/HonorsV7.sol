@@ -6,11 +6,12 @@ contract StudentContract{
     address private universityAddress;
     UniversityContract private universityContract;
     
-    constructor(address _studentAddress, address _universityAddress) public{
+    constructor(address _studentAddress, address _universityAddress) public {
         studentAddress = _studentAddress;
         universityAddress = _universityAddress;
         universityContract = UniversityContract(_universityAddress);
     }
+    
     
     modifier restricted(){
         require(msg.sender == studentAddress);
@@ -132,7 +133,7 @@ contract UniversityContract {
         if(studentExists(_studentAddress) == true){
             return false;
         }
-        Student storage s = studentMappings[_studentAddress];
+        Student memory s = studentMappings[_studentAddress];
         isStudent[_studentAddress] = true;
 
         s.fullName = _fullName;
@@ -183,15 +184,24 @@ contract UniversityContract {
     }
     
     function setStudentName(address _studentAddress, string memory _newName) public restricted returns(bool){
+        if(studentExists(_studentAddress) == false){
+            return false;
+        }
         studentMappings[_studentAddress].fullName = _newName;
         return true;
     }
     
     function setDateOfBirth(address _studentAddress, string memory _newDOB) public restricted returns(bool){
+        if(studentExists(_studentAddress) == false){
+            return false;
+        }
         studentMappings[_studentAddress].dateOfBirth = _newDOB;
         return true;
     }
     function setStudentID(address _studentAddress, string memory _newID) public restricted returns(bool){
+        if(studentExists(_studentAddress) == false){
+            return false;
+        }
         studentMappings[_studentAddress].studentID = _newID;
         return true;
     }
@@ -199,8 +209,6 @@ contract UniversityContract {
     function countStudents() view public returns (uint) {
         return listOfStudents.length;
     }
-    
-
     
     function setAwardHolder(bytes32 _awardID, address _oldStudent, address _newStudent) 
     public restricted returns(bool){
@@ -210,9 +218,9 @@ contract UniversityContract {
         else if(awardExists(_awardID) == false){
             return false;
         }
-            Award storage oldAward = awardMappings[_awardID];
+            Award memory oldAward = awardMappings[_awardID];
             bytes32 randomHash = random(_newStudent, oldAward.title, oldAward.dateOfIssue, oldAward.ipfsHash);
-            Award storage newAward = awardMappings[randomHash];
+            Award memory newAward = awardMappings[randomHash];
             newAward.studentAddress = _newStudent;
             newAward.universityIssuerAddress = universityAddress;
             newAward.dateOfIssue = oldAward.dateOfIssue;

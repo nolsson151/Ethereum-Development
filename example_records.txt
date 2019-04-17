@@ -9,7 +9,7 @@
 Student 1 (Account 2):
 0x14723a09acff6d2a60dcdf7aa4aff308fddc160c, "Niklas Olsson", "08/10/1994", "S1434184"
 
-Records:
+Awards:
 0x14723a09acff6d2a60dcdf7aa4aff308fddc160c, "High School Diploma", "05/06/2013", "QmT75PGxNSM89DsAdYrTRyCVARQRJ9ARnp9hiqMvmRsHBZ"
 0x14723a09acff6d2a60dcdf7aa4aff308fddc160c, "Bachelor of Science", "20/03/2017", "QmSZoBmPR9aDcobqepreckwg9swPHpnviupcVRRwzLVLQU"
 0x14723a09acff6d2a60dcdf7aa4aff308fddc160c, "Masters of Science", "30/03/2019", "QmPCizHcnL2QWkRm1BkDkrFzMLsozsWnCawnwh1xqBwGRy"
@@ -23,7 +23,7 @@ olsson_cert3.pdf
 Student 2 (Account 3):
 0x4b0897b0513fdc7c541b6d9d7e929c4e5364d2db, "John Feller", "11/10/1989", "S1335351"
 
-Records:
+Awards:
 0x4b0897b0513fdc7c541b6d9d7e929c4e5364d2db, "Bachelor of Arts", "20/03/2012", "QmSYe8XwYszSzwXZeuv8b49tWHW6da1w5v9UsKbHaTW9YY"
 0x4b0897b0513fdc7c541b6d9d7e929c4e5364d2db, "Masters of Arts", "24/06/2015", "QmbaNRzV1E8tDmz3Tq4SPj8trevq88A7iyAsamNJAYk93n"
 0x4b0897b0513fdc7c541b6d9d7e929c4e5364d2db, "PhD of Art History", "05/01/2018", "QmbnNfEF34kswftL8Yi1Qw87S2kiP9pGYZvppjtfXSfwxD"
@@ -36,7 +36,7 @@ feller_cert3.pdf
 Student 3 (Account 4):
 0x583031d1113ad414f02576bd6afabfb302140225, "Jane Person", "31/03/1964", "S1346556"
 
-Records:
+Awards:
 0x583031d1113ad414f02576bd6afabfb302140225, "PhD", "10/04/1982", "QmbZSzbHLTQqszJ1G3WksyTRsvfuKK6pmqc4Qu2gtF8NQQ"
 0x583031d1113ad414f02576bd6afabfb302140225, "Bachelor of Engineering", "26/01/2011", "QmavK8fXLNE1adDF1sQumhevFwX5rR4q8b1hUfMV6dUycs"
 0x583031d1113ad414f02576bd6afabfb302140225, "Bachelor of Science", "30/02/2014", "QmYYdqwtmfPsosmwAT3Ln5S5DRKzRw1rAHQgLchtZmhrcE"
@@ -51,7 +51,7 @@ person_cert4.pdf
 Student 4 (Account 5):
 0xdd870fa1b7c4700f2bd7f44238821c26f7392148, "Steve Bloke", "16/09/1992", "S1455313"
 
-Records:"
+Awards:"
 0xdd870fa1b7c4700f2bd7f44238821c26f7392148, "High School Diploma", "30/12/2014", "QmVSfF7cYq7SC1u7XKC1L9dyVmYz5Zr9mE8dbFLnVi3Ksj"
 0xdd870fa1b7c4700f2bd7f44238821c26f7392148, "Bachelors of Arts", "06/10/2018", "QmUnB8gLadow5YBrShUjinUmD3scxjTVrPuYMnahcMHjwV"
 0xdd870fa1b7c4700f2bd7f44238821c26f7392148, "Technical Certificate", "19/05/2019", "QmQwjjGLubLvTZWCGpdAVQ5vmLXeLy8sNj5XgStKEiFY6C"
@@ -66,7 +66,7 @@ bloke_cert4.pdf
 Student 5 (Acount 6):
 0xa3f4ebbb9332570217e5910fa0ca27da11122c00, "Amy Buddy", "28/05/1999", "S5687212"
 
-Records:
+Awards:
 0xa3f4ebbb9332570217e5910fa0ca27da11122c00, "HnC in Design", "14/09/2017", "QmdmyxGroaGd9hiSPCuASP8Mno7sH3MAoD5zEwPfUhjEdr"
 0xa3f4ebbb9332570217e5910fa0ca27da11122c00, "HnD in Computer Graphics", "14/09/2018", "QmeNwxYoPcEfqGSpb6s8zfyT5E4Di2tPKdVbNERVBy5rZA"
 0xa3f4ebbb9332570217e5910fa0ca27da11122c00, "Bachelors of Arts", "06/10/2018", "QmSiCw4theyUH877yWRzVQpqVumZLm6HFye5XAcSCbx5s3"
@@ -79,7 +79,7 @@ buddy_cert3.pdf
 Student 6 (Account 7):
 0xe13596fe4f1019597dc9abffd084e349a99ea2e9, "Jane Person", "08/12/1992", "S5129654"
 
-Records:
+Awards:
 0xe13596fe4f1019597dc9abffd084e349a99ea2e9, "High School Diploma", "30/12/2014", "QmcBTCGiTNWGAGrEFP4PLKjKggGAMyoKgXvwK8WxcJ4Lm2"
 0xe13596fe4f1019597dc9abffd084e349a99ea2e9, "Bachelors of Arts", "06/10/2018", "Qmb1gCQG63uGL9okXSvEpbDNyWuHqxkgFAuaM9MXRK1p8b"
 0xe13596fe4f1019597dc9abffd084e349a99ea2e9, "Technical Certificate", "31/07/2019", "Qmb24zzVCsyTETyMJYkBeH2hqNz3TFYvgNgf9twrtcHcG1"

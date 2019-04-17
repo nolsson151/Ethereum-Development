@@ -76,13 +76,7 @@ contract HonorsV4 {
         student.records.push(_recordID) -1;
     }
     
-    //Returns all created records by "unique" identifier
-    // function getRecords() view public returns(bytes32[]){
-    //     return recordIndex;
-    // }
-    // function countRecords() view public returns (uint) {
-    //     return recordIndex.length;
-    // }
+
     
     function getRecordDetails(bytes32 _bytes32) public view returns 
     (address, address, string, string, string, string){
