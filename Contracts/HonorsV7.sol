@@ -133,7 +133,7 @@ contract UniversityContract {
         if(studentExists(_studentAddress) == true){
             return false;
         }
-        Student memory s = studentMappings[_studentAddress];
+        Student storage s = studentMappings[_studentAddress];
         isStudent[_studentAddress] = true;
 
         s.fullName = _fullName;
@@ -155,7 +155,7 @@ contract UniversityContract {
         return listOfStudents;
     }
     
-    function getStudentContract(address _studentAddress) public view restricted returns(address){
+    function getStudentContract(address _studentAddress) private view restricted returns(address){
         return studentContracts[_studentAddress];
     }
     
@@ -218,9 +218,9 @@ contract UniversityContract {
         else if(awardExists(_awardID) == false){
             return false;
         }
-            Award memory oldAward = awardMappings[_awardID];
+            Award storage oldAward = awardMappings[_awardID];
             bytes32 randomHash = random(_newStudent, oldAward.title, oldAward.dateOfIssue, oldAward.ipfsHash);
-            Award memory newAward = awardMappings[randomHash];
+            Award storage newAward = awardMappings[randomHash];
             newAward.studentAddress = _newStudent;
             newAward.universityIssuerAddress = universityAddress;
             newAward.dateOfIssue = oldAward.dateOfIssue;

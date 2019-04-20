@@ -1,4 +1,4 @@
-pragma solidity^0.4.25;
+pragma solidity^0.5.5;
 
 contract newCourses {
     address manager;
@@ -27,14 +27,12 @@ contract newCourses {
         
     }
     
-    modifier restricted() { //MODIFIER TO ONLY REQUIRE ONLY CONTRACT CREATOR
+    modifier restricted() {
         require(msg.sender == manager); 
         _;
     }
     
-    //Creates a record and assigns the details to a corressponding student
-    //and add it to their personal record array. Record is also added to
-    //a record array of all created records. 
+
     function addRecord(address _holderAddress, string _title, string _dateOfIssue, string _ipfsHash) public restricted{
         var randomHash = random(_holderAddress, _title, _dateOfIssue, _ipfsHash);
         var record = recordMappings[randomHash];
