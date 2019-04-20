@@ -1,6 +1,6 @@
 pragma solidity^0.5.5;
 
-contract HonorsV5 {
+contract HonoursV5 {
     address private manager;
     mapping (address => Student) private studentMappings;
     mapping (address => bool) private isStudent;

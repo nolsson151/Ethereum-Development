@@ -1,6 +1,6 @@
 pragma solidity ^0.5.5;
 
-contract HonorsV2 {
+contract HonoursV2 {
 
     function setHash(string x) public{
         ipfsHash = x;

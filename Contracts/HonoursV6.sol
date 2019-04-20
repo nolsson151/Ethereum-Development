@@ -9,10 +9,7 @@ contract StudentContract{
     function getStudentDetails(address _address) public view  returns 
     (string memory,string memory,string memory,bytes32[] memory) {
         return issuer.getStudentDetails;
-    }
-    
-    
-    
+    } 
 }
 
 contract Issuer {

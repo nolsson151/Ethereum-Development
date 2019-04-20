@@ -1,6 +1,6 @@
 pragma solidity^0.4.25;
 
-contract HonorsV4 {
+contract HonoursV4 {
     address manager;
     mapping (address => Student) students;
     address[] studentAccts;
